@@ -19,7 +19,7 @@ class Auction(models.Model):
     description = models.TextField(null=True)
     starting_bid = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='auctions')
-    thumbnail = models.ImageField()
+    thumbnail = models.ImageField(upload_to='thumbnails')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

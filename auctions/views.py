@@ -1,6 +1,7 @@
+from auctions.forms import AuctionCreateForm
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -61,3 +62,26 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def create(request):
+    if request.method == "POST":
+        fields = request.POST or None
+        files = request.FILES or None
+
+        form = AuctionCreateForm(fields, files)
+
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "auctions/create.html", {
+                "form": form,
+            })
+    else:
+        form = AuctionCreateForm()
+
+        return render(request, "auctions/create.html", {
+            "form": form,
+        })
